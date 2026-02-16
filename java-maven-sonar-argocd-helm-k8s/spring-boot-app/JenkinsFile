@@ -5,8 +5,7 @@ pipeline {
     stage('Checkout') {
       steps {
         bat 'echo passed'
-        REM Jenkins is already doing checkout via "Pipeline script from SCM"
-        REM So no extra git clone here
+        // Jenkins already checks out SCM for this pipeline job.
       }
     }
 
@@ -60,7 +59,7 @@ pipeline {
             set BUILD_NUMBER=%BUILD_NUMBER%
             powershell -Command "(Get-Content java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml) -replace 'replaceImageTag', '%BUILD_NUMBER%' | Set-Content java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml"
             git add java-maven-sonar-argocd-helm-k8s/spring-boot-app-manifests/deployment.yml
-            git commit -m "Update deployment image to version %BUILD_NUMBER%"
+            git commit -m \"Update deployment image to version %BUILD_NUMBER%\"
             git push https://%GITHUB_TOKEN%@github.com/%GIT_USER_NAME%/%GIT_REPO_NAME% HEAD:main
           '''
         }
